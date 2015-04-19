@@ -55,6 +55,9 @@ public class CS317_Project extends Application {
             }
         }
        
+      
+
+       
        //attaching arithmetic operation to events
        
       for (int row=1;row<=4;row++){
@@ -67,8 +70,12 @@ public class CS317_Project extends Application {
             }
         //equals button
        btn[4][2].setOnAction(e->{
-               
-             calculate();
+             if(newSign!=(null))  
+                calculate();
+             else
+             {
+                 display.setText(enteredNumber);
+             }
               });
        //back button
        btn[0][4].setOnAction(e->{
@@ -190,7 +197,8 @@ public class CS317_Project extends Application {
     public static void calculate(){
         if(!enteredNumber.equals("")){
         number2=Double.parseDouble(enteredNumber);
-        if(newSign.equals("*")||newSign.equals("/")){
+        if(!newSign.equals("")) {
+            if(newSign.equals("*")||newSign.equals("/")){
             double n;
             if(newSign.equals("*"))
             n=number1*number2;
@@ -215,15 +223,16 @@ public class CS317_Project extends Application {
         else if (newSign.equals("-")){
           display.setText(Double.toString(number1-number2));
         }
-        
+      
         //sets the start value of the calculation to the answer
        enteredNumber=display.getText();
        number1=Double.parseDouble(display.getText());
        newSign=null;
        start=true;
         }
+
         
-     
+        }
     }
    
     public static void calculateSigns(String sign){
@@ -288,8 +297,17 @@ public class CS317_Project extends Application {
         }
     }
     public static void enterNumber(String num){
-        enteredNumber=enteredNumber+num;
-        display.setText(enteredNumber);
+        boolean allowDecimal=true;
+        for(int i=0;i<display.getText().length()&&allowDecimal;i++){
+           if(display.getText().charAt(i)=='.')
+                allowDecimal=false;  
+        }
+      
+           if(allowDecimal||!num.equals(".")) {
+               enteredNumber=enteredNumber+num;
+               display.setText(enteredNumber);
+                
+           }
     }
     public static void modifyPane(GridPane pane)
     {
@@ -310,7 +328,10 @@ public class CS317_Project extends Application {
         pane.setHalignment(display, HPos.CENTER);
     }
   
-   
+    public static void multiPoints()
+       {
+            btn[4][1].setMouseTransparent(true);
+       }
     public static void intializeButtons(){
            
       final ImageView squareRoot = new ImageView(
